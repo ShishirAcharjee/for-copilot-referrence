@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Economy Works - An Island Story (shishir : /)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fadeIn {
+            from { opacity:  0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { transform:  translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes coinMove {
+            0% { transform:  scale(1); }
+            50% { transform: scale(1.2) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+        
+        @keyframes logEntry {
+            from { 
+                opacity: 0; 
+                transform: translateX(-20px);
+                background-color: rgba(34, 197, 94, 0.2);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0);
+                background-color:  transparent;
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        .slide-in {
+            animation: slideIn 0.8s ease-out forwards;
+        }
+        
+        .coin-animation {
+            animation: coinMove 0.6s ease-in-out;
+        }
+        
+        . character-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .character-card:hover {
+            transform: translateY(-8px);
+            box-shadow:  0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .transaction-highlight {
+            animation: pulse 0.5s ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: rgba(34, 197, 94, 0.2); }
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform:  translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .log-entry {
+            animation: logEntry 0.5s ease-out forwards;
+        }
+        
+        .pulse-button {
+            animation: pulseButton 2s infinite;
+        }
+        
+        @keyframes pulseButton {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        . chapter-indicator {
+            transition: all 0.3s ease;
+        }
+
+        .chapter-active {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-white to-green-50 min-h-screen">
+    
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-8 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-center mb-2">
+                <i class="fas fa-island-tropical mr-3"></i>How Economy Works
+            </h1>
+            <p class="text-center text-blue-100 text-lg">An Island Story of Money and Trade</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12 max-w-7xl">
+        
+        <!-- Chapter Progress Indicator -->
+        <section class="mb-12">
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 text-center">Story Progress</h3>
+                <div class="flex justify-between items-center relative">
+                    <div class="absolute top-6 left-0 right-0 h-1 bg-gray-200 z-0">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 to-green-500 transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between w-full relative z-10">
+                        <div id="chapter-indicator-1" class="chapter-indicator flex flex-col items-center">
+                            <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold mb-2 shadow-lg">
+                                1
+                            </div>
+                            <p class="text-xs font-semibold text-gray-700 text-center">Gold<br>Standard</p>
+                        </div>
+                        
+                        <div id="chapter-indicator-2" class="chapter-indicator flex flex-col items-center opacity-50">
+                            <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center text-white font-bold mb-2 shadow-lg">
+                                2
+                            </div>
+                            <p class="text-xs font-semibold text-gray-700 text-center">The<br>Crisis</p>
+                        </div>
+                        
+                        <div id="chapter-indicator-3" class="chapter-indicator flex flex-col items-center opacity-50">
+                            <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mb-2 shadow-lg">
+                                3
+                            </div>
+                            <p class="text-xs font-semibold text-gray-700 text-center">Fiat<br>Money</p>
+                        </div>
+                        
+                        <div id="chapter-indicator-4" class="chapter-indicator flex flex-col items-center opacity-50">
+                            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold mb-2 shadow-lg">
+                                4
+                            </div>
+                            <p class="text-xs font-semibold text-gray-700 text-center">New<br>Era</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Character Cards -->
+        <section id="introduction" class="mb-12 scroll-reveal">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-users text-blue-600 mr-2"></i>
+                    Meet the Islanders
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+                <!-- Arif - Farmer -->
+                <div class="character-card bg-white rounded-xl shadow-lg p-4 text-center border-t-4 border-green-500">
+                    <div class="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white text-2xl">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Arif</h3>
+                    <p class="text-xs text-gray-600 mb-2">Farmer</p>
+                    <div class="mt-3 flex items-center justify-center">
+                        <i class="fas fa-coins text-yellow-600 mr-1 text-sm"></i>
+                        <span id="arif-balance" class="font-bold text-base text-gray-800">100</span>
+                    </div>
+                </div>
+
+                <!-- Bobita - Weaver -->
+                <div class="character-card bg-white rounded-xl shadow-lg p-4 text-center border-t-4 border-purple-500">
+                    <div class="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl">
+                        <i class="fas fa-scroll"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Bobita</h3>
+                    <p class="text-xs text-gray-600 mb-2">Weaver</p>
+                    <div class="mt-3 flex items-center justify-center">
+                        <i class="fas fa-coins text-yellow-600 mr-1 text-sm"></i>
+                        <span id="bobita-balance" class="font-bold text-base text-gray-800">100</span>
+                    </div>
+                </div>
+
+                <!-- Sojol - Carpenter -->
+                <div class="character-card bg-white rounded-xl shadow-lg p-4 text-center border-t-4 border-amber-500">
+                    <div class="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center text-white text-2xl">
+                        <i class="fas fa-hammer"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Sojol</h3>
+                    <p class="text-xs text-gray-600 mb-2">Carpenter</p>
+                    <div class="mt-3 flex items-center justify-center">
+                        <i class="fas fa-coins text-yellow-600 mr-1 text-sm"></i>
+                        <span id="sojol-balance" class="font-bold text-base text-gray-800">100</span>
+                    </div>
+                </div>
+
+                <!-- Deepa - Fisher -->
+                <div class="character-card bg-white rounded-xl shadow-lg p-4 text-center border-t-4 border-blue-500">
+                    <div class="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white text-2xl">
+                        <i class="fas fa-fish"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Deepa</h3>
+                    <p class="text-xs text-gray-600 mb-2">Fisher</p>
+                    <div class="mt-3 flex items-center justify-center">
+                        <i class="fas fa-coins text-yellow-600 mr-1 text-sm"></i>
+                        <span id="deepa-balance" class="font-bold text-base text-gray-800">100</span>
+                    </div>
+                </div>
+
+                <!-- Rony - Miner -->
+                <div class="character-card bg-white rounded-xl shadow-lg p-4 text-center border-t-4 border-yellow-500">
+                    <div class="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center text-white text-2xl">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Rony</h3>
+                    <p class="text-xs text-gray-600 mb-2">Miner</p>
+                    <div class="mt-3 flex items-center justify-center">
+                        <i class="fas fa-coins text-yellow-600 mr-1 text-sm"></i>
+                        <span id="rony-balance" class="font-bold text-base text-gray-800">100</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Current Chapter Display -->
+        <section id="current-chapter" class="mb-8">
+            <div id="chapter-content" class="transition-all duration-500">
+                <!-- Chapter content will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <!-- Interactive Simulator -->
+        <section class="mb-12">
+          
+
+                <!-- Gold Reserve Indicator -->
+                <div id="gold-reserve-section" class="bg-gradient-to-r from-yellow-50 to-amber-50 rounded-xl p-6 mb-6 border-2 border-yellow-300">
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-2 flex items-center">
+                                <i class="fas fa-university text-yellow-600 mr-2"></i>
+                                Gold Reserve Status
+                            </h4>
+                            <p class="text-sm text-gray-600">Money supply limited by gold reserves</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <i class="fas fa-coins text-yellow-500 text-3xl"></i>
+                                <span id="gold-amount" class="text-2xl font-bold text-yellow-700">500g</span>
+                            </div>
+                            <p class="text-xs text-gray-600">Available Gold</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-calendar-day text-green-600 mr-3"></i>
+                    Daily Island Life
+                </h3>
+                
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-6">
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Current Day</p>
+                            <p class="text-3xl font-bold text-indigo-600">
+                                <i class="fas fa-sun mr-2"></i>
+                                Day <span id="current-day">1</span>
+                            </p>
+                            <p id="day-description" class="text-sm text-gray-600 mt-2 italic"></p>
+                        </div>
+                        <button id="next-day-btn" 
+                                class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transform transition hover:scale-105 pulse-button">
+                            <i class="fas fa-forward mr-2"></i>Next Day
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Dynamic Ledger -->
+                <div class="overflow-x-auto">
+                    <h4 class="text-lg font-bold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-book text-blue-600 mr-2"></i>
+                        Account Balances
+                    </h4>
+                    <table class="w-full border-collapse">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+                                <th class="p-3 text-left rounded-tl-lg">Character</th>
+                                <th class="p-3 text-center">Balance</th>
+                                <th class="p-3 text-right rounded-tr-lg">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ledger-body" class="divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50 transition" data-person="arif">
+                                <td class="p-3">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-seedling text-green-600 mr-2"></i>
+                                        <span class="font-semibold">Arif</span>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <span class="font-bold text-lg ledger-balance">100</span>
+                                    <i class="fas fa-coins text-yellow-600 ml-1"></i>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <span class="text-sm px-3 py-1 bg-green-100 text-green-700 rounded-full">Active</span>
+                                </td>
+                            </tr>
+                            <tr class="hover: bg-gray-50 transition" data-person="bobita">
+                                <td class="p-3">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-scroll text-purple-600 mr-2"></i>
+                                        <span class="font-semibold">Bobita</span>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <span class="font-bold text-lg ledger-balance">100</span>
+                                    <i class="fas fa-coins text-yellow-600 ml-1"></i>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <span class="text-sm px-3 py-1 bg-green-100 text-green-700 rounded-full">Active</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition" data-person="sojol">
+                                <td class="p-3">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-hammer text-amber-600 mr-2"></i>
+                                        <span class="font-semibold">Sojol</span>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <span class="font-bold text-lg ledger-balance">100</span>
+                                    <i class="fas fa-coins text-yellow-600 ml-1"></i>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <span class="text-sm px-3 py-1 bg-green-100 text-green-700 rounded-full">Active</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition" data-person="deepa">
+                                <td class="p-3">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-fish text-blue-600 mr-2"></i>
+                                        <span class="font-semibold">Deepa</span>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <span class="font-bold text-lg ledger-balance">100</span>
+                                    <i class="fas fa-coins text-yellow-600 ml-1"></i>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <span class="text-sm px-3 py-1 bg-green-100 text-green-700 rounded-full">Active</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition" data-person="rony">
+                                <td class="p-3">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-gem text-yellow-600 mr-2"></i>
+                                        <span class="font-semibold">Rony</span>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <span class="font-bold text-lg ledger-balance">100</span>
+                                    <i class="fas fa-coins text-yellow-600 ml-1"></i>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <span class="text-sm px-3 py-1 bg-green-100 text-green-700 rounded-full">Active</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                  <!-- Transaction Log -->
+                <div class="mb-6">
+                    <h4 class="text-lg font-bold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-scroll text-amber-600 mr-2"></i>
+                        Transaction History
+                    </h4>
+                    <div id="transaction-log" class="bg-gray-50 rounded-xl p-4 max-h-96 overflow-y-auto space-y-2">
+                        <p class="text-gray-500 text-center py-8 italic" id="no-transactions">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            No transactions yet.  Click "Next Day" to start the story! 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Table (shows in Chapter 3+) -->
+        <section id="comparison-section" class="mb-12 hidden">
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                    <i class="fas fa-balance-scale text-indigo-600 mr-2"></i>
+                    Gold Standard vs.  Fiat Money
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="p-4 text-left bg-gray-100 font-bold text-gray-700 border-b-2 border-gray-300 rounded-tl-lg">
+                                    Feature
+                                </th>
+                                <th class="p-4 text-center bg-yellow-100 font-bold text-yellow-800 border-b-2 border-yellow-300">
+                                    <i class="fas fa-coins mr-2"></i>Gold Standard
+                                </th>
+                                <th class="p-4 text-center bg-green-100 font-bold text-green-800 border-b-2 border-green-300 rounded-tr-lg">
+                                    <i class="fas fa-money-bill-wave mr-2"></i>Fiat Money
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-4 font-semibold text-gray-700">
+                                    <i class="fas fa-anchor text-blue-600 mr-2"></i>Backed By
+                                </td>
+                                <td class="p-4 text-center">
+                                    <span class="inline-block bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
+                                        Physical Gold
+                                    </span>
+                                </td>
+                                <td class="p-4 text-center">
+                                    <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                                        Government Promise
+                                    </span>
+                                </td>
+                            </tr>
+                            
+                            <tr class="hover: bg-gray-50">
+                                <td class="p-4 font-semibold text-gray-700">
+                                    <i class="fas fa-chart-line text-purple-600 mr-2"></i>Money Supply
+                                </td>
+                                <td class="p-4 text-center text-gray-700">
+                                    <i class="fas fa-lock text-red-600 mr-1"></i>
+                                    Limited by gold reserves
+                                </td>
+                                <td class="p-4 text-center text-gray-700">
+                                    <i class="fas fa-unlock text-green-600 mr-1"></i>
+                                    Flexible, can be adjusted
+                                </td>
+                            </tr>
+                            
+                            <tr class="hover: bg-gray-50">
+                                <td class="p-4 font-semibold text-gray-700">
+                                    <i class="fas fa-seedling text-green-600 mr-2"></i>Economic Growth
+                                </td>
+                                <td class="p-4 text-center text-gray-700">
+                                    <i class="fas fa-times-circle text-red-600 mr-1"></i>
+                                    Constrained by gold availability
+                                </td>
+                                <td class="p-4 text-center text-gray-700">
+                                    <i class="fas fa-check-circle text-green-600 mr-1"></i>
+                                    Can expand with economy
+                                </td>
+                            </tr>
+                            
+                            <tr class="hover: bg-gray-50">
+                                <td class="p-4 font-semibold text-gray-700">
+                                    <i class="fas fa-tools text-amber-600 mr-2"></i>Crisis Response
+                                </td>
+                                <td class="p-4 text-center text-gray-700">
+                                    <i class="fas fa-times-circle text-red-600 mr-1"></i>
+                                    Very limited options
+                                </td>
+                                <td class="p-4 text-center text-gray-700">
+                                    <i class="fas fa-check-circle text-green-600 mr-1"></i>
+                                    Can inject money when needed
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">
+                <i class="fas fa-heart text-red-500 mr-2"></i>
+                Created with love to make economics fun and accessible
+            </p>
+            <p class="text-gray-400 text-sm">
+                An interactive educational journey through the evolution of money
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Balance tracking
+        const balances = {
+            arif: 100,
+            bobita: 100,
+            sojol:  100,
+            deepa:  100,
+            rony:  100
+        };
+
+        // Character details
+        const characters = {
+            arif: { name: 'Arif', role: 'Farmer', icon: 'seedling', color: 'green', goods: 'vegetables' },
+            bobita: { name: 'Bobita', role: 'Weaver', icon: 'scroll', color:  'purple', goods: 'cloth' },
+            sojol:  { name: 'Sojol', role: 'Carpenter', icon: 'hammer', color: 'amber', goods: 'furniture' },
+            deepa: { name: 'Deepa', role: 'Fisher', icon: 'fish', color: 'blue', goods: 'fish' },
+            rony: { name: 'Rony', role: 'Miner', icon: 'gem', color: 'yellow', goods: 'minerals' }
+        };
+
+        let currentDay = 1;
+        let currentChapter = 1;
+        let goldReserve = 500;
+
+        // Story events for each day
+        const storyEvents = [
+            // Chapter 1: Gold Standard (Days 1-8)
+            { day: 1, chapter: 1, from: 'arif', to: 'bobita', amount: 15, reason: 'bought cloth for the family', description: 'The island economy begins!  Gold-backed currency flows smoothly.' },
+            { day: 2, chapter: 1, from:  'bobita', to: 'deepa', amount: 20, reason: 'purchased fresh fish for dinner', description: 'Trade is thriving.  Everyone trusts the gold-backed money.' },
+            { day: 3, chapter: 1, from: 'deepa', to:  'sojol', amount:  25, reason: 'ordered a new fishing boat', description: 'Big purchases are possible with stable currency.' },
+            { day: 4, chapter: 1, from: 'sojol', to: 'rony', amount: 10, reason: 'bought nails and metal tools', description: 'The circular flow of money keeps the economy moving.' },
+            { day: 5, chapter: 1, from: 'rony', to: 'arif', amount: 18, reason: 'purchased vegetables and rice', description: 'Gold standard provides price stability and trust.' },
+            { day: 6, chapter: 1, from: 'arif', to:  'sojol', amount:  12, reason: 'commissioned a new storage shed', description: 'Economic activity continues at a steady pace.' },
+            { day: 7, chapter: 1, from: 'bobita', to: 'rony', amount: 15, reason: 'bought decorative stones', description: 'The gold-backed system seems perfect...  for now.' },
+            { day: 8, chapter: 1, from: 'deepa', to: 'arif', amount: 22, reason: 'purchased fruits and grains', description: 'Everyone is satisfied with the stable monetary system.' },
+            
+            // Chapter 2: The Crisis (Days 9-16)
+            { day: 9, chapter: 2, from: 'sojol', to: 'bobita', amount: 17, reason: 'bought curtains and fabric', description: '⚠️ NEWS:  5 new families arrive on the island!  But gold supply stays the same... ', chapterChange: true },
+            { day: 10, chapter: 2, from:  'rony', to: 'deepa', amount: 20, reason: 'paid for preserved fish', description: 'Money feels scarce. People start competing for limited currency.' },
+            { day: 11, chapter: 2, from: 'arif', to: 'deepa', amount: 30, reason: 'traded vegetables for seafood', description: '⚠️ CRISIS: Not enough money to go around!  Prices start to drop.' },
+            { day: 12, chapter: 2, from:  'bobita', to: 'sojol', amount: 25, reason: 'ordered a wooden loom', description: 'Deflation begins:  People hoard money, waiting for lower prices.' },
+            { day: 13, chapter: 2, from: 'deepa', to: 'rony', amount:  16, reason: 'bought fishing hooks', description: '⚠️ Trade slows down.  The rigid gold standard can\'t adapt.' },
+            { day: 14, chapter: 2, from:  'sojol', to: 'arif', amount: 21, reason: 'purchased fresh produce', description: 'Some islanders have too little money to buy necessities.' },
+            { day: 15, chapter: 2, from: 'rony', to: 'bobita', amount:  35, reason: 'commissioned a decorative tapestry', description: '⚠️ BREAKING: Foreign traders demand gold payment, draining reserves!' },
+            { day: 16, chapter: 2, from:  'arif', to: 'rony', amount: 40, reason: 'bought farming tools', description: 'The island council calls emergency meeting. Change is needed! ', goldLoss: 100 },
+            
+            // Chapter 3: Birth of Fiat Money (Days 17-24)
+            { day: 17, chapter: 3, from: 'bobita', to: 'deepa', amount: 18, reason: 'purchased dried fish', description: '🎉 REVOLUTION: The island adopts Fiat Money! Currency no longer tied to gold. ', chapterChange: true, fiatStart: true },
+            { day: 18, chapter: 3, from:  'deepa', to: 'sojol', amount: 23, reason: 'ordered fishing equipment repairs', description: 'Government can now adjust money supply based on economic needs! ', moneyInjection: 50 },
+            { day: 19, chapter: 3, from: 'sojol', to: 'rony', amount:  15, reason: 'bought metal hinges', description: 'New currency printed to accommodate population growth.' },
+            { day: 20, chapter: 3, from: 'rony', to: 'arif', amount:  19, reason: 'purchased wheat and corn', description: 'Flexible money supply allows economy to breathe and grow. ', moneyInjection: 30 },
+            { day: 21, chapter: 3, from: 'arif', to:  'bobita', amount: 16, reason: 'bought winter clothing', description: 'Trade increases!  People have confidence in the new system.' },
+            { day: 22, chapter: 3, from: 'bobita', to:  'deepa', amount: 20, reason: 'purchased premium seafood', description: 'The economy expands without gold constraints.' },
+            { day: 23, chapter: 3, from: 'deepa', to: 'sojol', amount: 24, reason: 'ordered a luxury boat', description: 'Economic growth accelerates under the fiat system!' },
+            { day: 24, chapter: 3, from:  'sojol', to:  'rony', amount: 18, reason: 'bought construction materials', description: 'The central bank carefully manages inflation and growth.' },
+            
+            // Chapter 4: New Era of Prosperity (Days 25-30)
+            { day: 25, chapter: 4, from:  'rony', to: 'arif', amount: 22, reason: 'purchased organic produce', description: '🌟 NEW ERA: The island thrives!  Fiat money enables modern economy.', chapterChange: true },
+            { day: 26, chapter: 4, from: 'arif', to: 'bobita', amount: 20, reason: 'bought artisan textiles', description: 'Balanced monetary policy creates sustainable prosperity. ', moneyInjection: 40 },
+            { day:  27, chapter: 4, from: 'bobita', to: 'deepa', amount:  25, reason: 'purchased export-quality fish', description: 'The island now trades freely with other islands!' },
+            { day: 28, chapter: 4, from:  'deepa', to: 'sojol', amount: 28, reason: 'ordered commercial fishing fleet', description: 'Investment and innovation flourish with flexible currency.' },
+            { day: 29, chapter: 4, from: 'sojol', to: 'rony', amount: 21, reason: 'bought rare minerals for crafting', description: 'The government uses monetary policy to maintain stability. ', moneyInjection: 25 },
+            { day: 30, chapter: 4, from: 'rony', to:  'arif', amount: 24, reason: 'purchased agricultural equipment', description: '✨ CONCLUSION: Trust and smart policy make fiat money work! ', isEnd: true }
+        ];
+
+        // Chapter templates
+        const chapterTemplates = {
+            1: {
+                title: 'Chapter 1: The Gold Standard Era',
+                color: 'yellow',
+                icon: 'crown',
+                description: 'Rony discovers gold!  The government issues currency backed by precious metal. Every note can be exchanged for real gold.',
+                gradient: 'from-yellow-400 to-yellow-600'
+            },
+            2: {
+                title: 'Chapter 2: The Crisis Emerges',
+                color: 'red',
+                icon: 'exclamation-triangle',
+                description: 'Population grows but gold doesn\'t!  Money becomes scarce, prices fall, and trade slows.  The rigid system shows its flaws.',
+                gradient: 'from-red-500 to-red-700'
+            },
+            3: {
+                title: 'Chapter 3: The Birth of Fiat Money',
+                color: 'green',
+                icon: 'lightbulb',
+                description:  'Revolutionary change! Money is now backed by government promise, not gold. The supply can grow with the economy.',
+                gradient: 'from-green-500 to-emerald-600'
+            },
+            4: {
+                title:  'Chapter 4: New Era of Prosperity',
+                color:  'purple',
+                icon: 'rocket',
+                description: 'The island thrives! Flexible fiat currency enables growth, trade, and prosperity. Smart policy keeps it stable.',
+                gradient: 'from-purple-500 to-indigo-600'
+            }
+        };
+
+        // Initialize
+        updateChapterDisplay(1);
+
+        // Next Day button handler
+        document.getElementById('next-day-btn').addEventListener('click', function() {
+            if (currentDay > storyEvents.length) {
+                showCompletionMessage();
+                return;
+            }
+
+            const event = storyEvents[currentDay - 1];
+            
+            // Handle chapter changes
+            if (event.chapterChange) {
+                currentChapter = event.chapter;
+                updateChapterDisplay(event.chapter);
+                updateProgressBar();
+            }
+
+            // Handle fiat money transition
+            if (event.fiatStart) {
+                document.getElementById('gold-reserve-section').classList.add('hidden');
+                document.getElementById('comparison-section').classList.remove('hidden');
+            }
+
+            // Handle gold loss
+            if (event. goldLoss) {
+                goldReserve -= event.goldLoss;
+                document.getElementById('gold-amount').textContent = goldReserve + 'g';
+            }
+
+            // Handle money injection (fiat era)
+            if (event.moneyInjection) {
+                // Distribute new money
+                Object.keys(balances).forEach(person => {
+                    balances[person] += event.moneyInjection / 5;
+                });
+                addSystemLog(`💵 Central Bank Action: Injected ${event.moneyInjection} currency units into the economy`);
+            }
+
+            processTransaction(event);
+            currentDay++;
+            document.getElementById('current-day').textContent = currentDay;
+            document.getElementById('day-description').textContent = event.description;
+
+            // Scroll to transaction log
+            document.getElementById('transaction-log').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        function updateChapterDisplay(chapter) {
+            const template = chapterTemplates[chapter];
+            const content = document.getElementById('chapter-content');
+            
+            content.innerHTML = `
+                <div class="bg-gradient-to-r ${template.gradient} rounded-3xl shadow-2xl p-8 md:p-12 text-white fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                        <i class="fas fa-${template.icon} mr-3"></i>${template.title}
+                    </h2>
+                    <p class="text-lg md:text-xl text-white/90">
+                        ${template.description}
+                    </p>
+                </div>
+            `;
+
+            // Update chapter indicators
+            for (let i = 1; i <= 4; i++) {
+                const indicator = document.getElementById(`chapter-indicator-${i}`);
+                if (i < chapter) {
+                    indicator. classList.remove('opacity-50');
+                    indicator.classList.add('opacity-70');
+                } else if (i === chapter) {
+                    indicator.classList.remove('opacity-50');
+                    indicator.classList. add('chapter-active');
+                } else {
+                    indicator.classList.add('opacity-50');
+                    indicator.classList.remove('chapter-active');
+                }
+            }
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentChapter - 1) / 3) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+        }
+
+        function processTransaction(event) {
+            const { from, to, amount, reason } = event;
+
+            // Check if sender has enough balance
+            if (balances[from] < amount) {
+                addLogEntry(from, to, amount, reason, true, event);
+                return;
+            }
+
+            // Perform transaction
+            balances[from] -= amount;
+            balances[to] += amount;
+
+            // Update UI
+            updateBalances(from, to);
+            addLogEntry(from, to, amount, reason, false, event);
+        }
+
+        function updateBalances(fromPerson, toPerson) {
+            // Update character cards
+            document.getElementById(`${fromPerson}-balance`).textContent = Math.round(balances[fromPerson]);
+            document.getElementById(`${toPerson}-balance`).textContent = Math.round(balances[toPerson]);
+
+            // Update ledger with animation
+            const ledgerRows = document.querySelectorAll('#ledger-body tr');
+            ledgerRows.forEach(row => {
+                const person = row.getAttribute('data-person');
+                
+                const balanceCell = row.querySelector('.ledger-balance');
+                if (person === fromPerson || person === toPerson) {
+                    balanceCell.textContent = Math.round(balances[person]);
+                    balanceCell.classList.add('coin-animation');
+                    row.classList.add('transaction-highlight');
+                    
+                    setTimeout(() => {
+                        balanceCell.classList.remove('coin-animation');
+                        row. classList.remove('transaction-highlight');
+                    }, 600);
+                }
+            });
+        }
+
+        function addLogEntry(from, to, amount, reason, failed = false, event) {
+            const log = document.getElementById('transaction-log');
+            const noTransactionsMsg = document.getElementById('no-transactions');
+            
+            if (noTransactionsMsg) {
+                noTransactionsMsg.remove();
+            }
+
+            const fromChar = characters[from];
+            const toChar = characters[to];
+
+            const entry = document.createElement('div');
+            entry.className = `log-entry p-4 rounded-lg border-l-4 ${
+                failed ? 'bg-red-50 border-red-500' : 'bg-white border-blue-500 shadow'
+            }`;
+
+            const dayNumber = event.day;
+            const chapterBadge = `
+                <span class="bg-${chapterTemplates[event.chapter].color}-100 text-${chapterTemplates[event.chapter].color}-700 px-2 py-1 rounded text-xs font-bold mr-2">
+                    Ch ${event.chapter}
+                </span>
+            `;
+
+            entry.innerHTML = `
+                <div class="flex items-start justify-between flex-wrap gap-2">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-2">
+                            ${chapterBadge}
+                            <span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-xs font-bold mr-2">
+                                Day ${dayNumber}
+                            </span>
+                            <span class="text-xs text-gray-500">${new Date().toLocaleTimeString()}</span>
+                        </div>
+                        <p class="text-sm font-semibold text-gray-800 mb-1">
+                            <i class="fas fa-${fromChar.icon} text-${fromChar.color}-600 mr-1"></i>
+                            <span class="text-${fromChar.color}-700">${fromChar.name}</span>
+                            <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+                            <i class="fas fa-${toChar.icon} text-${toChar.color}-600 mr-1"></i>
+                            <span class="text-${toChar.color}-700">${toChar.name}</span>
+                        </p>
+                        <p class="text-sm text-gray-700">
+                            ${failed ? 
+                                `<i class="fas fa-times-circle text-red-600 mr-1"></i>Transaction failed: insufficient balance` :
+                                `${fromChar.name} ${reason}`
+                            }
+                        </p>
+                        ${event.description ? `
+                            <p class="text-xs text-gray-600 mt-2 italic bg-gray-50 p-2 rounded">
+                                💡 ${event.description}
+                            </p>
+                        ` : ''}
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-bold ${failed ? 'text-red-600' : 'text-green-600'}">
+                            ${failed ? '✗' : ''} ${amount} <i class="fas fa-coins text-yellow-600"></i>
+                        </p>
+                        ${! failed ?  `
+                            <p class="text-xs text-gray-600 mt-1">
+                                ${fromChar.name}:  ${Math.round(balances[from])} | ${toChar.name}: ${Math.round(balances[to])}
+                            </p>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            log.insertBefore(entry, log.firstChild);
+        }
+
+        function addSystemLog(message) {
+            const log = document.getElementById('transaction-log');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry p-4 rounded-lg bg-blue-50 border-l-4 border-blue-500';
+            entry.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-info-circle text-blue-600 mr-3 text-xl"></i>
+                    <p class="text-sm font-semibold text-gray-800">${message}</p>
+                </div>
+            `;
+            log.insertBefore(entry, log.firstChild);
+
+            // Update all balances in UI after injection
+            Object.keys(balances).forEach(person => {
+                document.getElementById(`${person}-balance`).textContent = Math.round(balances[person]);
+                const row = document.querySelector(`tr[data-person="${person}"]`);
+                if (row) {
+                    row. querySelector('.ledger-balance').textContent = Math.round(balances[person]);
+                }
+            });
+        }
+
+        function showCompletionMessage() {
+            const log = document.getElementById('transaction-log');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry p-6 rounded-lg bg-gradient-to-r from-purple-50 to-indigo-50 border-2 border-purple-300 text-center';
+            entry. innerHTML = `
+                <i class="fas fa-trophy text-yellow-500 text-4xl mb-3"></i>
+                <h4 class="text-xl font-bold text-gray-800 mb-2">🎉 Journey Complete!</h4>
+                <p class="text-gray-700 mb-4">
+                    You've witnessed the complete evolution of money on Prosperity Island! <br>
+                    From Gold Standard → Crisis → Fiat Money → Modern Prosperity
+                </p>
+                <div class="grid grid-cols-3 gap-4 my-4 text-sm">
+                    <div class="bg-white p-3 rounded-lg shadow">
+                        <p class="font-bold text-2xl text-yellow-600">${storyEvents.length}</p>
+                        <p class="text-gray-600">Days</p>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow">
+                        <p class="font-bold text-2xl text-green-600">4</p>
+                        <p class="text-gray-600">Chapters</p>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow">
+                        <p class="font-bold text-2xl text-blue-600">5</p>
+                        <p class="text-gray-600">Characters</p>
+                    </div>
+                </div>
+                <button onclick="resetSimulation()" class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-full">
+                    <i class="fas fa-redo mr-2"></i>Restart Journey
+                </button>
+            `;
+            log.insertBefore(entry, log.firstChild);
+        }
+
+        function resetSimulation() {
+            // Reset balances
+            Object.keys(balances).forEach(key => balances[key] = 100);
+            
+            // Reset counters
+            currentDay = 1;
+            currentChapter = 1;
+            goldReserve = 500;
+            
+            document.getElementById('current-day').textContent = currentDay;
+            document.getElementById('day-description').textContent = '';
+            document.getElementById('gold-amount').textContent = goldReserve + 'g';
+            
+            // Reset chapter display
+            updateChapterDisplay(1);
+            updateProgressBar();
+            
+            // Show/hide sections
+            document.getElementById('gold-reserve-section').classList.remove('hidden');
+            document.getElementById('comparison-section').classList.add('hidden');
+            
+            // Clear log
+            const log = document.getElementById('transaction-log');
+            log.innerHTML = '<p class="text-gray-500 text-center py-8 italic" id="no-transactions"><i class="fas fa-info-circle mr-2"></i>No transactions yet.  Click "Next Day" to start the story!</p>';
+            
+            // Update all balances in UI
+            Object. keys(balances).forEach(person => {
+                document.getElementById(`${person}-balance`).textContent = 100;
+                const row = document.querySelector(`tr[data-person="${person}"]`);
+                if (row) {
+                    row.querySelector('.ledger-balance').textContent = 100;
+                }
+            });
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold:  0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries. forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target. classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('. scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Initialize
+        window.addEventListener('load', function() {
+            const introSection = document.getElementById('introduction');
+            if (introSection) {
+                introSection.classList.add('visible');
+            }
+        });
+    </script>
+</body>
+</html>
